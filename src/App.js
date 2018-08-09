@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
+import { TodoForm } from './components/todo/TodoForm'
+import { TodoList } from './components/todo/TodoList'
+
 
 let c = 0
 let deleteTodo = (arr, id) => arr.filter(e => e.id !== id)
-let getTodo = (arr, id) => arr.filter(e => e.id === id)
 let makeID = () => c++
 
 class App extends Component {
@@ -24,7 +26,7 @@ class App extends Component {
     this.setState({
       todos: updatedTodos,
       currentTodo: '',
-    }) 
+    })
   }
   handleEmpty = (evt) => {
     evt.preventDefault()
@@ -61,17 +63,17 @@ class App extends Component {
           <h2> {this.state.todos.length}{(this.state.todos.length === 1) ? " item" : " items"}</h2>
         </div>
         <div className="Todo-App">
-          <form onSubmit={(this.state.currentTodo) ? this.handleSubmit : this.handleEmpty}>
-            <input type="text" autofocus="true" onChange={this.handleInputChange} value={this.state.currentTodo} />
-          </form>
-          <div className="Todo-List">
-            <ul>
-              {this.state.todos.map(todo => <li key={todo.id} ><span className='delete-item'>
-                <a href="#" onClick={() => this.handleRemove(todo.id)}>X</a></span>
-                <input type="checkbox" onChange={() => this.handleToggle(todo.id)} checked={todo.isComplete} />
-                {todo.name}</li>)}
-            </ul>
-          </div>
+          <TodoForm
+           handleInputChange={this.handleInputChange}
+           currentTodo={this.state.currentTodo}
+           handleSubmit={this.handleSubmit}
+           handleEmpty={this.handleEmpty}
+           
+           />
+          <TodoList todos={this.state.todos}
+          handleRemove={this.handleRemove}
+          handleToggle={this.handleToggle}
+          />
         </div>
       </div>
     );
